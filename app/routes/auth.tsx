@@ -1,7 +1,7 @@
 import { redirect } from "@remix-run/node";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { supabase } from "../lib/supabaseClient";
-import { Button, Input, Card, CardBody, CardHeader, Tabs, Tab } from "@heroui/react";
+import { Button, Input, Card, CardBody, Tabs, Tab } from "@heroui/react";
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
@@ -27,23 +27,31 @@ export async function action({ request }: { request: Request }) {
 
 export default function AuthPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100/60 via-purple-100/40 to-pink-100/60">
-      <Card className="backdrop-blur-xl bg-white/50 border border-white/30 shadow-2xl rounded-3xl w-full max-w-md p-8 transition-all duration-300">
-        <CardHeader className="mb-4">
-          <Tabs aria-label="Auth Tabs" className="">
+    <div className="min-h-screen flex flex-col items-center justify-center px-2 py-8">
+      {/* Title */}
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-sm text-center mb-8 tracking-tight select-none">
+        Tourney <span className="bg-gradient-to-r from-blue-400/80 via-purple-400/80 to-pink-400/80 bg-clip-text text-transparent">Go</span>
+      </h1>
+      {/* Auth Card */}
+      <div className="flex flex-col items-center w-full">
+          {/* Tabs at the top - HeroUI pattern */}
+          <Tabs aria-label="Options">
             <Tab key="login" title="Login">
-              <CardBody className="p-0">
-                <AuthForm mode="login" />
-              </CardBody>
+              <Card className="min-w-[32rem]">  
+                <CardBody>
+                  <AuthForm mode="login" />
+                </CardBody>
+              </Card>
             </Tab>
             <Tab key="register" title="Register">
-              <CardBody className="p-0">
+              <Card className="min-w-[32rem]">
+                <CardBody>
                 <AuthForm mode="register" />
-              </CardBody>
+                </CardBody>
+              </Card>
             </Tab>
           </Tabs>
-        </CardHeader>
-      </Card>
+        </div>
     </div>
   );
 }
@@ -53,37 +61,38 @@ function AuthForm({ mode }: { mode: "login" | "register" }) {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   return (
-    <Form method="post" className="space-y-6">
+    <Form method="post" className="space-y-8">
       <input type="hidden" name="mode" value={mode} />
-      <div className="space-y-2">
-        <label className="block text-gray-700 font-semibold">Email</label>
+      <div className="space-y-3">
+        <label>Email</label>
         <Input
           name="email"
           type="email"
           required
-          className="w-full rounded-xl bg-white/40 border border-white/30 shadow-inner backdrop-blur placeholder-gray-400 px-4 py-2 focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition-all duration-200"
+          autoComplete="username"
           placeholder="you@email.com"
         />
       </div>
-      <div className="space-y-2">
-        <label className="block text-gray-700 font-semibold">Password</label>
+      <div className="space-y-3">
+        <label>Password</label>
         <Input
           name="password"
           type="password"
           required
-          className="w-full rounded-xl bg-white/40 border border-white/30 shadow-inner backdrop-blur placeholder-gray-400 px-4 py-2 focus:ring-2 focus:ring-pink-300 focus:border-pink-400 transition-all duration-200"
+          autoComplete={mode === "login" ? "current-password" : "new-password"}
           placeholder="••••••••"
         />
       </div>
       {actionData?.error && (
-        <div className="text-red-500 text-sm font-medium rounded-lg bg-white/60 border border-red-200 px-3 py-2 shadow-sm mb-2">
+        <div className="text-danger text-base font-medium rounded-xl bg-danger/10 border border-danger/20 px-4 py-3 shadow-md mb-2 text-center backdrop-blur">
           {actionData.error}
         </div>
       )}
       <Button
         type="submit"
-        className="w-full py-2 rounded-xl bg-gradient-to-r from-blue-400/70 via-purple-400/60 to-pink-400/70 text-white font-semibold shadow-lg hover:from-blue-500/80 hover:to-pink-500/80 hover:shadow-xl active:scale-95 transition-all duration-150 backdrop-blur border border-white/40"
+        className="w-full py-3 rounded-2xl bg-gradient-to-r from-blue-400/80 via-purple-400/70 to-pink-400/80 text-white font-bold text-lg shadow-xl hover:from-blue-500/90 hover:to-pink-500/90 hover:shadow-2xl active:scale-98 transition-all duration-200 border border-white/40 backdrop-blur-lg focus:outline-none focus:ring-4 focus:ring-blue-200"
         disabled={isSubmitting}
+        style={{ boxShadow: "0 6px 32px 0 rgba(31,38,135,0.18)" }}
       >
         {isSubmitting
           ? mode === "login"

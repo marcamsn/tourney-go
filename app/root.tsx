@@ -30,6 +30,8 @@ function useHydrated() {
   return hydrated;
 }
 
+import { HeroUIProvider } from "@heroui/react";
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const hydrated = useHydrated();
   return (
@@ -41,7 +43,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body {...(hydrated ? { "data-hydrated": "true" } : {})}>
-        {children}
+        <HeroUIProvider>
+          <main className="dark text-foreground bg-background min-h-screen">
+            {children}
+          </main>
+        </HeroUIProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
