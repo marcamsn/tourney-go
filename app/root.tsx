@@ -22,7 +22,16 @@ export const links: LinksFunction = () => [
   },
 ];
 
+import { useEffect, useState } from "react";
+
+function useHydrated() {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+  return hydrated;
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const hydrated = useHydrated();
   return (
     <html lang="en">
       <head>
@@ -31,7 +40,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body {...(hydrated ? { "data-hydrated": "true" } : {})}>
         {children}
         <ScrollRestoration />
         <Scripts />
