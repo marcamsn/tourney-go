@@ -22,7 +22,18 @@ export const links: LinksFunction = () => [
   },
 ];
 
+import { useEffect, useState } from "react";
+
+function useHydrated() {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+  return hydrated;
+}
+
+import { HeroUIProvider } from "@heroui/react";
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const hydrated = useHydrated();
   return (
     <html lang="en">
       <head>
@@ -31,8 +42,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
-        {children}
+      <body {...(hydrated ? { "data-hydrated": "true" } : {})}>
+        <HeroUIProvider>
+          <main className="dark text-foreground bg-background min-h-screen">
+            {children}
+          </main>
+        </HeroUIProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
