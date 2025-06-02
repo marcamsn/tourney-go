@@ -90,7 +90,7 @@ function AuthForm({ mode }: { mode: "login" | "register" }) {
       )}
       <Button
         type="submit"
-        className="w-full py-3 rounded-2xl bg-gradient-to-r from-blue-400/80 via-purple-400/70 to-pink-400/80 text-white font-bold text-lg shadow-xl hover:from-blue-500/90 hover:to-pink-500/90 hover:shadow-2xl active:scale-98 transition-all duration-200 border border-white/40 backdrop-blur-lg focus:outline-none focus:ring-4 focus:ring-blue-200"
+        className="w-full py-3 rounded-2xl bg-gradient-to-r from-blue-400/80 via-purple-400/70 to-pink-400/80 text-white font-bold text-lg shadow-xl hover:from-blue-500/90 hover:to-pink-500/90 hover:shadow-2xl active:scale-98 transition-all duration-200 backdrop-blur-lg focus:outline-none focus:ring-4 focus:ring-blue-200"
         disabled={isSubmitting}
         style={{ boxShadow: "0 6px 32px 0 rgba(31,38,135,0.18)" }}
       >
